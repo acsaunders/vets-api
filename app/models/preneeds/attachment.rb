@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'base64'
+
 module Preneeds
   class Attachment
     include Virtus.model
@@ -21,15 +23,7 @@ module Preneeds
         attachmentType: {
           attachmentTypeId: attachment_type.attachment_type_id
         },
-        dataHandler: {
-          'inc:Include': '',
-          attributes!: {
-            'inc:Include': {
-              href: "cid:#{@data_handler}",
-              'xmlns:inc': 'http://www.w3.org/2004/08/xop/include'
-            }
-          }
-        },
+        dataHandler: Base64.encode64(@data_handler),
         description: file.filename,
         sendingName: VETS_GOV,
         sendingSource: sending_source
